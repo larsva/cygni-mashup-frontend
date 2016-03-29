@@ -28,7 +28,9 @@ class AppComponent {
     //noinspection JSUnusedGlobalSymbols
     this.artists = [
       {name: 'Nirvana', id: '5b11f4ce-a62d-471e-81fc-a69a8278c7da'},
-      {name: 'Neil Young', id: '75167b8b-44e4-407b-9d35-effe87b223cf'}
+      {name: 'Neil Young', id: '75167b8b-44e4-407b-9d35-effe87b223cf'},
+      {name: 'Beatles', id: 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'},
+      {name: 'Ebba Grön', id: '4a41bce5-f225-4e0e-91d8-bf49ebbd83c2'}
     ];
 
     this.max = 100;
