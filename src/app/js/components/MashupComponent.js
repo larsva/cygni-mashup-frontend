@@ -1,39 +1,38 @@
 
 import {Component} from 'angular2/core';
+import { RouteParams} from 'angular2/router';
 import {MashupService} from '../services/MashupService'
 
 @Component({
   selector: 'mashup-view', // Tag to show app
   templateUrl: 'templates/MashupComponent',
-  inputs:['selectedArtist'],
 })
 
 class MashupComponent {
-  selectedArtist;
+  mbid;
 
-  constructor( mashupService) {
+  constructor( mashupService,routeParams) {
     this.mashup = {biography: {description: 'N/A'}};
     this.mashupService = mashupService;
+    this.routeParams = routeParams;
    }
 
-  ngOnChanges(change) {
-    if (change.selectedArtist) {
-      if (this.selectedArtist.id) {
-        console.log('selectedArtist has changed>> ', this.selectedArtist.name);
-        this.mashupService.getMashup(this.selectedArtist.id)
-          .subscribe((res) => {
-            this.mashup = res;
-            console.log('Mashup id>> ', this.mashup.id);
-          });
-      } else {
-        this.mashup = {biography: {description: 'N/A'}};
-      }
+  ngOnInit() {
+    let mbId = this.routeParams.get('mbid');
+    if (mbId) {
+     this.mashupService.getMashup(mbId)
+      .subscribe((res) => {
+        this.mashup = res;
+        console.log('Mashup id>> ', this.mashup.id);
+      });
+    } else {
+    this.mashup = {biography: {description: 'N/A'}};
     }
   }
 
 };
 
 
-MashupComponent.parameters = [[MashupService]];
+MashupComponent.parameters = [[MashupService],[RouteParams]];
 
 export {MashupComponent};

@@ -1,11 +1,11 @@
 # Bygg/installation etc
-Enkel frontend till Cygni-Mashup-RxJs.
+Enkel frontend till [cygni-mashup-rxjs](https://github.com/larsva/cygni-mashup-rxjs).
 
 Utvecklad i angular 2 som låter dig välja mellan att visa info om antingen
 Nirvana eller Neil Young.
 
 Har en minimal serverdel som servrar frontenddelen med statiskt material. En proxy skickar "Mashup"-förfrågningar  vidare
-till cygni-mashup-rxjs som måste vara i gång och lyssna på port 3001.
+till [cygni-mashup-rxjs](https://github.com/larsva/cygni-mashup-rxjs) som måste vara i gång och lyssna på port 3001.
 
 Kör
 ```bash

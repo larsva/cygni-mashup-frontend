@@ -1,4 +1,5 @@
 import {Component,EventEmitter} from 'angular2/core';
+import { RouteConfig, ROUTER_DIRECTIVES } from 'angular2/router';
 import {MashupComponent} from './MashupComponent';
 import {MashupService} from '../services/MashupService';
 import {CORE_DIRECTIVES } from 'angular2/common';
@@ -7,15 +8,21 @@ import {PROGRESSBAR_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 @Component({
   selector: 'mashup-app', // Tag to show app
   templateUrl: 'templates/AppComponent',
-  directives: [MashupComponent, PROGRESSBAR_DIRECTIVES,CORE_DIRECTIVES]
+  directives: [MashupComponent, PROGRESSBAR_DIRECTIVES,CORE_DIRECTIVES,ROUTER_DIRECTIVES]
 })
+
+@RouteConfig([
+  { path: '/mashup/:mbid', component: MashupComponent, name: 'Mashup' }
+])
 
 class AppComponent {
 
   constructor(mashupService) {
     this.mashupService = mashupService;
+    //noinspection JSUnusedGlobalSymbols
     this.selectedArtist = {};
     this.count = 0;
+    //noinspection JSUnusedGlobalSymbols
     this.artists = [
       {name: 'Nirvana', id: '5b11f4ce-a62d-471e-81fc-a69a8278c7da'},
       {name: 'Neil Young', id: '75167b8b-44e4-407b-9d35-effe87b223cf'}
@@ -56,11 +63,11 @@ class AppComponent {
   }
 
   onSelect(artist) {
+    //noinspection JSUnusedGlobalSymbols
     this.selectedArtist = artist;
   }
 
-}
-;
+};
 
 AppComponent.parameters = [[MashupService]];
 
