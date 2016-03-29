@@ -3,6 +3,7 @@ import {Http} from 'angular2/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Observable } from 'rxjs/Rx';
+import {LoadingInfo} from '../common/LoadingInfo';
 
 @Injectable()
 class MashupService {
@@ -12,15 +13,16 @@ class MashupService {
   }
 
   getMashup(mbId) {
-    this._observer.next(true);
-    return this.http.get('/mashup/' + mbId)
+    this._observer.next(new LoadingInfo(mbId, true));
+    return this.http.get('/api/' + mbId)
        .map((res) => {
-        this._observer.next(false);
+        this._observer.next(new LoadingInfo(mbId, false));
         return JSON.parse(res._body);
        })
       .catch((e) => {
-        this._observer.next(false);
-        return Observable.throw(e.json().error || 'Server error');
+        let error = e.json().error || 'Server error';
+        this._observer.next(new LoadingInfo(mbId, false,error));
+        return Observable.throw(error);
       });
   }
 

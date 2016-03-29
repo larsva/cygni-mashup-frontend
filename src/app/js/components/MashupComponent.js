@@ -1,38 +1,32 @@
 
 import {Component} from 'angular2/core';
-import { RouteParams} from 'angular2/router';
-import {MashupService} from '../services/MashupService'
+import {CanActivate} from 'angular2/router';
+import {MashupService} from '../services/MashupService';
+import canReadMashup from '../services/CanReadMashup';
 
 @Component({
   selector: 'mashup-view', // Tag to show app
   templateUrl: 'templates/MashupComponent',
 })
+@CanActivate((next, previous) => {
+  return canReadMashup.canRead(next,previous);
+})
 
 class MashupComponent {
   mbid;
 
-  constructor( mashupService,routeParams) {
-    this.mashup = {biography: {description: 'N/A'}};
+  constructor( mashupService) {
+    this.mashup = {albums:[]};
     this.mashupService = mashupService;
-    this.routeParams = routeParams;
    }
 
   ngOnInit() {
-    let mbId = this.routeParams.get('mbid');
-    if (mbId) {
-     this.mashupService.getMashup(mbId)
-      .subscribe((res) => {
-        this.mashup = res;
-        console.log('Mashup id>> ', this.mashup.id);
-      });
-    } else {
-    this.mashup = {biography: {description: 'N/A'}};
-    }
+    this.mashup = canReadMashup.mashup;
   }
 
 };
 
 
-MashupComponent.parameters = [[MashupService],[RouteParams]];
+MashupComponent.parameters = [[MashupService]];
 
 export {MashupComponent};

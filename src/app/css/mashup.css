@@ -133,3 +133,14 @@ body {
   margin-bottom:0;
   height: 10px;
 }
+
+.error-message-container {
+  position:absolute;
+  z-index:1;
+  left:50%;
+}
+
+.error-message {
+  position:relative;
+  left:-50%;
+}

@@ -3,12 +3,15 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 import {ROUTER_PROVIDERS} from 'angular2/router';
 import {MashupService} from './services/MashupService';
 import {AppComponent} from './components/AppComponent';
-import {enableProdMode} from 'angular2/core';
+import {enableProdMode,ComponentRef} from 'angular2/core';
+import {appInjector} from './services/appInjector';
 
 let boot = document.addEventListener('DOMContentLoaded', () => {
   enableProdMode();
-  bootstrap(AppComponent,[HTTP_PROVIDERS,ROUTER_PROVIDERS,MashupService]);
+  bootstrap(AppComponent,[HTTP_PROVIDERS,ROUTER_PROVIDERS,MashupService])
+    .then((appRef) => {
+      appInjector(appRef.injector);
+    });
 });
 
-// Expose boot so it can be required by webpack.
 module.exports = boot;

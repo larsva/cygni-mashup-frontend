@@ -1,5 +1,5 @@
 .biography Biography
-<div [innerHtml]="mashup.biography.description"></div>
+<div *ngIf="mashup.biography" [innerHtml]="mashup.biography.description"></div>
 .albums Albums
 div
   div(*ngFor="#album of mashup.albums")

@@ -6,13 +6,15 @@ nav.navbar.navbar-inverse.navbar-fixed-top
            ul.nav.navbar-nav.navbar-right
             li
                a About
+    .error-message-container(*ngIf="errorMessage")
+        alert.error-message(*ngIf="errorMessage" "type"='danger' "dismissible"='true' "(close)" = "closeErrorMessage()") {{errorMessage}}
 .container-fluid
-    .row
-        .col-sm-3.col-md-2.sidebar.artists-sidebar
-            progressbar.progress-striped.active(*ngIf="loadingState|async" "[max]"="max" "[value]"="loadingProgress|async" type="success")
-            .no-progress(*ngIf="!(loadingState|async)")
-            ul.nav.nav-sidebar
-                li(*ngFor="#artist of artists" "[class.active]"='artist.id === selectedArtist.id')
-                    a("[routerLink]"="['/Mashup', { mbid: artist.id}]" "(click)"="onSelect(artist)") {{artist.name}}
-         .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
-            router-outlet
+ .row
+    .col-sm-3.col-md-2.sidebar.artists-sidebar
+        progressbar.progress-striped.active(*ngIf="loadingState|async" "[max]"="max" "[value]"="loadingProgress|async" type="success")
+        .no-progress(*ngIf="!(loadingState|async)")
+        ul.nav.nav-sidebar
+            li(*ngFor="#artist of artists" "[class.active]"='artist.id === selectedArtist.id')
+                a("[routerLink]"="['/Mashup', { mbid: artist.id}]") {{artist.name}}
+    .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
+        router-outlet

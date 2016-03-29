@@ -5,13 +5,15 @@
     let path = require('path');
     let express = require('express');
     let morgan = require('morgan');
-    let httpProxy = require('http-proxy');
+    let apiProxy = require('http-proxy-middleware');
     let configuration = require('./configuration');
 
-    let apiProxy = httpProxy.createProxyServer();
+    let proxy = apiProxy('/api/*',configuration.proxyOptions);
+
     app.set('views', path.join(__dirname, '..', 'views'));
     app.set('view engine', 'jade');
     app.use(express.static(path.join(__dirname, '..', 'public')));
+    app.use(proxy);
 
     app.use(morgan(configuration.logType));
 
@@ -19,12 +21,12 @@
         res.render('index');
     });
 
-    app.get('/templates/:template', function (req, res) {
-        res.render('templates/' + req.params.template);
+    app.get('/mashup/:mbid', function (req, res) {
+        res.render('index');
     });
 
-    app.all('/mashup/*', function(req, res) {
-      apiProxy.web(req, res, {target: configuration.apiForwardingUrl});
+    app.get('/templates/:template', function (req, res) {
+        res.render('templates/' + req.params.template);
     });
 
 

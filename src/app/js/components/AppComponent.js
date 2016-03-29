@@ -4,15 +4,18 @@ import {MashupComponent} from './MashupComponent';
 import {MashupService} from '../services/MashupService';
 import {CORE_DIRECTIVES } from 'angular2/common';
 import {PROGRESSBAR_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+import {Alert} from 'ng2-bootstrap/ng2-bootstrap';
+
+let _ = require('lodash');
 
 @Component({
   selector: 'mashup-app', // Tag to show app
   templateUrl: 'templates/AppComponent',
-  directives: [MashupComponent, PROGRESSBAR_DIRECTIVES,CORE_DIRECTIVES,ROUTER_DIRECTIVES]
+  directives: [MashupComponent, PROGRESSBAR_DIRECTIVES, CORE_DIRECTIVES, ROUTER_DIRECTIVES,Alert]
 })
 
 @RouteConfig([
-  { path: '/mashup/:mbid', component: MashupComponent, name: 'Mashup' }
+  {path: 'mashup/:mbid', component: MashupComponent, name: 'Mashup'}
 ])
 
 class AppComponent {
@@ -31,13 +34,20 @@ class AppComponent {
     this.max = 100;
     this.loadingState = new EventEmitter();
     this.loadingProgress = new EventEmitter(0);
+
+    this.errorMessage = null;
   }
 
-  handleLoadingChange(loading) {
-    if (loading) {
+  lookupArtistById(id) {
+    return _.find(this.artists, (artist) => artist.id === id);
+
+  }
+
+  handleLoadingChange(loadingInfo) {
+    if (loadingInfo.loading) {
       this.loadingStarted();
     } else {
-      this.loadingFinished();
+      this.loadingFinished(loadingInfo);
     }
   }
 
@@ -51,23 +61,34 @@ class AppComponent {
     }, 50);
   }
 
-  loadingFinished() {
+  loadingFinished(loadingInfo) {
     clearInterval(this.progressInterval);
     this.loadingState.next(false);
     this.loadingProgress.next(0);
+    if (loadingInfo.error) {
+      this.handleLoadingError(loadingInfo.error);
+    } else {
+      //noinspection JSUnusedGlobalSymbols
+      this.selectedArtist = this.lookupArtistById(loadingInfo.mbId);
+    }
+  }
+
+  handleLoadingError(error) {
+    console.log('Error>> ', error);
+    this.errorMessage = error;
   }
 
   ngOnInit() {
     this.loadingState.next(false);
-    this.mashupService.loadingChange.subscribe((loading) => this.handleLoadingChange(loading));
+    this.mashupService.loadingChange.subscribe((loadingInfo) => this.handleLoadingChange(loadingInfo));
   }
 
-  onSelect(artist) {
-    //noinspection JSUnusedGlobalSymbols
-    this.selectedArtist = artist;
+  //noinspection JSUnusedGlobalSymbols
+  closeErrorMessage() {
+    this.errorMessage = null;
   }
-
-};
+}
+;
 
 AppComponent.parameters = [[MashupService]];
 
