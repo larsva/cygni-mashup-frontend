@@ -3,7 +3,7 @@ import {appInjector} from './appInjector';
 import {MashupService} from './MashupService';
 import {Router, ComponentInstruction} from 'angular2/router';
 
-class CanReadMashup {
+export default class CanReadMashup {
   constructor() {
     this._mashup = {};
   }
@@ -36,4 +36,3 @@ class CanReadMashup {
 
 }
 
-export default new CanReadMashup();

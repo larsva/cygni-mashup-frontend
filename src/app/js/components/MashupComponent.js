@@ -2,14 +2,16 @@
 import {Component} from 'angular2/core';
 import {CanActivate} from 'angular2/router';
 import {MashupService} from '../services/MashupService';
-import canReadMashup from '../services/CanReadMashup';
+import CanReadMashup from '../services/CanReadMashup';
+
+let reader = new CanReadMashup();
 
 @Component({
   selector: 'mashup-view', // Tag to show app
   templateUrl: 'templates/MashupComponent',
 })
 @CanActivate((next, previous) => {
-  return canReadMashup.canRead(next,previous);
+  return reader.canRead(next,previous);
 })
 
 class MashupComponent {
@@ -21,7 +23,7 @@ class MashupComponent {
    }
 
   ngOnInit() {
-    this.mashup = canReadMashup.mashup;
+    this.mashup = reader.mashup;
   }
 
 };
